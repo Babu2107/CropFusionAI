@@ -35,7 +35,7 @@ export function FertilizerResult() {
             <p className="fertilizer-result-p"> You should use <b> {predicted_fertilizer.toUpperCase()} </b> fertilizer in your farm !</p>
             <img className="fertilizer-result-img" src={output_image_path}  />
             <p className="fertilizer-result-description"> {output_descriptions[predicted_fertilizer]} </p>
-            <button className="fertilizer-try-btn" onClick={() => navigate("/fertilizer")}> Try again ? </button>
+            <button className="fertilizer-try-btn" onClick={() => navigate("/fertilizer")}> Another Crop </button>
         </>
     );
 }

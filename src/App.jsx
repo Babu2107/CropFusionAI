@@ -3,9 +3,10 @@ import './App.css';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { ModelLoader } from './components/home/HomePage.jsx';
 import { CropPage } from './components/crop/CropPage.jsx';
-import { FertilizerPage } from './components/fertilizer/FertilizerPage.jsx';
+import FertilizerPage from '/src/components/fertilizer/FertilizerPage.jsx';
 import { CropResult } from './components/result/CropResult';
 import { FertilizerResult } from './components/result/FertilizerResult';
+
 
 function NotFound(){ 
   // Redirect all unknown paths to /

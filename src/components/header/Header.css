@@ -2,7 +2,7 @@
   display: flex;
   justify-content: flex-end; /* shift the links to the right */
   align-items: center;
-  background-color: rgb(99, 0, 99);
+  background-color: #01431c;
   padding-bottom: 0.07rem; /* height of the header */
   width: 100vw;
 }
@@ -58,7 +58,7 @@
   }
 
   .header {
-    background-color: rgb(99, 0, 99);
+    background-color: rgb(1, 67, 28);
     width: min-content;
   }
 
@@ -111,7 +111,7 @@
   }
 
   .header {
-    background-color: rgb(99, 0, 99);
+    background-color: rgb(1, 67, 28);
     max-width: max-content;
   }
 
