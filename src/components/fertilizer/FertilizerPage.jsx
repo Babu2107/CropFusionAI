@@ -202,7 +202,7 @@ const cropData = [
         max_rainfall: 54.9,
     },
     {
-        label: 'maize',
+        label: 'Maize',
         min_N: 64.1,
         max_N: 97.2,
         min_P: 38.3,
@@ -507,9 +507,10 @@ function FertilizerPage() {
         const progressBar = document.querySelector('.fertilizer-progress-bar');
         progressBar.style.display = 'block';
         progressBar.style.visibility = 'visible';
-console.log("Fertilizer Prediction in progress...");
-console.log(cropDataEntry);
-payload={
+        console.log("Fertilizer Prediction in progress...");
+        console.log(cropDataEntry);
+
+var payload={
     Temparature: tempValue,
     Humidity: humidityValue,
     Moisture: moistureValue,
@@ -519,6 +520,7 @@ payload={
     Potassium: potassiumValue,
     Phosphorous: phosphorousValue
 }
+console.log(payload);
 axios.post("http://localhost:5000/predict-fert",payload).then((response) => {
     console.log(response.data);
     

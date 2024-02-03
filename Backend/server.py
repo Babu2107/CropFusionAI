@@ -7,6 +7,18 @@ import pandas as pd
 import sys
 app = Flask(__name__)
 CORS(app)
+df12= pd.read_csv('fert.csv')
+l12 = LabelEncoder()
+df12['Fertilizer_Name'] = l12.fit_transform(df12['Fertilizer_Name'])
+l22 = LabelEncoder()
+df12['Crop_Type'] = l22.fit_transform(df12['Crop_Type'])
+l32 = LabelEncoder()
+df12['Soil_Type'] = l32.fit_transform(df12['Soil_Type'])
+x2 = df12.iloc[:, df12.columns != 'Fertilizer_Name']
+y2 = df12.iloc[:, df12.columns == 'Fertilizer_Name']
+model2 = RandomForestClassifier()
+# print(x,y.values, file=sys.stderr)
+model2.fit(x2, y2.values.ravel())
 
 df = pd.read_csv('crop.csv')
 le = LabelEncoder()
@@ -17,7 +29,7 @@ y = df.iloc[:, df.columns == 'label']
 
 model = RandomForestClassifier()
 model.fit(x, y.values.ravel())
-
+# print(x, y.values, file=sys.stderr)
 @app.route('/')
 def hello_world():
     data = {
@@ -35,7 +47,10 @@ def predict():
         print('Received data:', data)
 
         input_data = pd.DataFrame(data, index=[0])
-        print('Input data:', input_data)
+        #change the firt 3 column name to N P K
+        # print('Input data:', input_data, file=sys.stderr)
+        
+        print('Input data:', input_data,file=sys.stderr)
 
         predicted_output = model.predict(input_data)
         predicted_crop_name = le.inverse_transform(predicted_output)[0]
@@ -47,18 +62,6 @@ def predict():
     except Exception as e:
         print('Error:', str(e))
         return jsonify({'error': str(e)})
-df = pd.read_csv('fert.csv')
-l1 = LabelEncoder()
-df['Fertilizer_Name'] = l1.fit_transform(df['Fertilizer_Name'])
-l2 = LabelEncoder()
-df['Crop_Type'] = l2.fit_transform(df['Crop_Type'])
-l3 = LabelEncoder()
-df['Soil_Type'] = l3.fit_transform(df['Soil_Type'])
-x = df.iloc[:, df.columns != 'Fertilizer_Name']
-y = df.iloc[:, df.columns == 'Fertilizer_Name']
-model = RandomForestClassifier()
-# print(x,y.values, file=sys.stderr)
-model.fit(x, y.values.ravel())
 @app.route('/predict-fert', methods=['OPTIONS', 'POST'])
 def predic():
     if request.method == 'OPTIONS':
@@ -71,11 +74,11 @@ def predic():
         input_data = pd.DataFrame(data, index=[0])
         print('Input data:', input_data)
         #label encoding
-        input_data['Crop_Type'] = l2.transform(input_data['Crop_Type'])
-        input_data['Soil_Type'] = l3.transform(input_data['Soil_Type'])
-
-        predicted_output = model.predict(input_data)
-        predicted_fertilizer = l1.inverse_transform(predicted_output)[0]
+        input_data['Crop_Type'] = l22.transform(input_data['Crop_Type'])
+        input_data['Soil_Type'] = l32.transform(input_data['Soil_Type'])
+    
+        predicted_output = model2.predict(input_data)
+        predicted_fertilizer = l12.inverse_transform(predicted_output)[0]
 
         print('Predicted Fertilizer:', predicted_fertilizer)
 
