@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { HashLoader } from "react-spinners";
 import Container from '@mui/material/Container';
 import Header from "../header/Header.jsx";
+import axios from "axios";
 
 const containerStyle = {
     display: 'flex',
@@ -101,6 +102,11 @@ export function ModelLoader() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        axios.get("http://127.0.0.1:5000").then((response) => {
+            console.log(response.data);
+        }
+        );
+        
         setTimeout(() => {
             setIsLoading(false);
         }, 2000);

@@ -11,6 +11,7 @@ import { output_descriptions } from "./FertilizerOutputs.jsx";
 import { useNavigate } from "react-router-dom";
 import { crop_value_ranges } from "../crop/CropPage.jsx";
 import LinearProgress from "@mui/material/LinearProgress";
+import axios from "axios";
 
 const cropData = [
     {
@@ -467,6 +468,8 @@ function FertilizerPage() {
         const tempValue = parseFloat(document.getElementById('temp-fertilizer-input').value);
         const phosphorousValue = parseFloat(document.getElementById('phosphorous-fertilizer-input').value);
         const potassiumValue = parseFloat(document.getElementById('potassium-fertilizer-input').value);
+        const humidityValue = parseFloat(document.getElementById('humidity-fertilizer-input').value);
+        const moistureValue = parseFloat(document.getElementById('moisture-fertilizer-input').value);
 
         // Check if the Input values are in required ranges for crops
         const selectedCrop = cropType;
@@ -489,6 +492,7 @@ function FertilizerPage() {
             min_humidity,
             max_humidity,
         } = cropDataEntry;
+        
 
         if (
             nitrogenValue < min_N || nitrogenValue > max_N ||
@@ -503,11 +507,26 @@ function FertilizerPage() {
         const progressBar = document.querySelector('.fertilizer-progress-bar');
         progressBar.style.display = 'block';
         progressBar.style.visibility = 'visible';
+console.log("Fertilizer Prediction in progress...");
+console.log(cropDataEntry);
+payload={
+    Temparature: tempValue,
+    Humidity: humidityValue,
+    Moisture: moistureValue,
+    Soil_Type: soilType,
+    Crop_Type: cropType,
+    Nitrogen:nitrogenValue,
+    Potassium: potassiumValue,
+    Phosphorous: phosphorousValue
+}
+axios.post("http://localhost:5000/predict-fert",payload).then((response) => {
+    console.log(response.data);
+    
 
-        const recommendedFertilizer = getRecommendedFertilizer(cropType);
+        const recommendedFertilizer = response.data.predicted_fertilizer;
         navigate("/fertilizer_result", { state: { predicted_fertilizer: recommendedFertilizer } });
-    };
-
+    });
+    }
     return (
         <>
             <Header />
